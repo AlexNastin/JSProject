@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TestJS_Nastin</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script>
+        var dictionary;
+        var separator = '\n';
+        var tmpDictionary = [];
+
+        $(document).ready(init());
+
+        function init() {
+            $.ajax({
+                url: "https://public.opencpu.org/ocpu/library/",
+                data: ['test'],
+                success: function (data) {
+                    splitString(data)
+                }
+            });
+        }
+
+        function printData() {
+            clearData();
+            var count = $("#count").val();
+            for (var i = 0; i < count; i++) {
+                tmpDictionary.push(dictionary[i]);
+                $("#table").append('<tr id="' + i + '" class="data"><td onclick="deleteRow(' + i + ')">' + i + '</td>' +
+                    '<td ><a target="_blank" href = "https://translate.google.ru/#en/ru/' + tmpDictionary[i] + '">' + tmpDictionary[i] + '</td></tr>');
+            }
+        }
+
+        function splitString(stringToSplit) {
+            dictionary = stringToSplit.split(separator);
+        }
+
+        function clearData() {
+            $(".data").remove();
+            tmpDictionary = [];
+        }
+
+        function deleteRow(number) {
+            $("#" + number).remove();
+        }
+    </script>
+
+</head>
+
+<body>
+<div class="container">
+    <form>
+        Count row:<br>
+        <input id="count" name="count" type="number">
+        <input type="button" value="GO" onclick="printData()">
+    </form>
+
+    <table id="table" class="table table-hover table-striped ">
+        <tr>
+            <th>№</th>
+            <th>Name</th>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
